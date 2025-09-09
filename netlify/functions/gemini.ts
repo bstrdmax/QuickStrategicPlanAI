@@ -1,9 +1,9 @@
 
-import type { Handler, HandlerEvent, HandlerContext } from "@netlify/functions";
+import type { Handler, HandlerEvent } from "@netlify/functions";
 import { GoogleGenAI, Type } from "@google/genai";
 import type { StrategicPlan } from '../../types';
 
-const handler: Handler = async (event: HandlerEvent, context: HandlerContext) => {
+const handler: Handler = async (event: HandlerEvent) => {
   if (event.httpMethod !== 'POST') {
     return {
       statusCode: 405,
@@ -134,8 +134,12 @@ const handler: Handler = async (event: HandlerEvent, context: HandlerContext) =>
         },
       });
   
-      const jsonText = response.text.trim();
-      const plan: StrategicPlan = JSON.parse(jsonText);
+      const jsonText = response.text;
+      if (!jsonText) {
+        throw new Error("Received an empty response from the AI model.");
+      }
+      
+      const plan: StrategicPlan = JSON.parse(jsonText.trim());
 
       return {
         statusCode: 200,
