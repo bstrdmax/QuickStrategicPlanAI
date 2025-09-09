@@ -73,7 +73,6 @@ const PlanDisplay: React.FC<PlanDisplayProps> = ({ plan }) => {
       
       const margin = 40;
       const pdfWidth = pdf.internal.pageSize.getWidth() - margin * 2;
-      const pdfHeight = pdf.internal.pageSize.getHeight() - margin * 2;
       let yPosition = margin;
 
       const headerElement = elementToCapture.querySelector('.plan-header') as HTMLElement;
